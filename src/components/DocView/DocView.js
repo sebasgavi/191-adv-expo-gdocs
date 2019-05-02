@@ -22,15 +22,6 @@ import store from '../../stores/store';
             'https://fotografias.lasexta.com/clipping/cmsimages01/2017/02/07/364CAAAC-A60E-43BB-8FED-05AA0B8F3AF9/58.jpg',
             Math.round(Math.random() * 100 + 50)
         );
-        /*this.setState((prevState) => {
-            return {
-                blocks: [ ...prevState.blocks, {
-                    id: prevState.blocks.length,
-                    type: 'img',
-                    url: 
-                } ]
-            }
-        });*/
     }
 
     render(){
@@ -50,7 +41,9 @@ import store from '../../stores/store';
                     if(block.type === 'text'){
                         return <Text key={block.id}>{block.text}</Text>
                     } else {
-                        return <Image key={block.id} style={{ height: 50 }} source={{ uri: block.url }} />
+                        return <Image key={block.id}
+                            style={{ height: block.height || 100 }}
+                            source={{ uri: block.url }} />
                     }
                 })}
 

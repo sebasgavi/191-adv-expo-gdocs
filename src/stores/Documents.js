@@ -34,6 +34,15 @@ export class Documents {
         });
     }
 
+    @action addImage(newImage, height){
+        this.selected.blocks.push({
+            id: this.selected.blocks.length,
+            type: 'img',
+            url: newImage,
+            height
+        });
+    }
+
     @action setSelectedById(id){
         let doc = this.list.find(doc => doc.id === parseInt(id));
         this.selected = doc;
