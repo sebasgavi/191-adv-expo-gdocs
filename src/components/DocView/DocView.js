@@ -6,8 +6,6 @@ import { observer } from 'mobx-react/native';
 
 @observer export default class DocView extends React.Component{
 
-    @observable test = 'hola';
-
     constructor(props){
         super(props);
         this.state = {

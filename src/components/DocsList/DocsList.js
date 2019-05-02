@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
 import { Link } from "react-router-native";
-import store from '../../stores/store';
+import { observer } from "mobx-react/native";
 
-export default class DocsList extends React.Component {
+import store from "../../stores/store";
+
+@observer export default class DocsList extends React.Component {
   render() {
     return (
       <View>
@@ -12,18 +14,6 @@ export default class DocsList extends React.Component {
             to={`/doc/${doc.id}`}>
             <Text>{doc.name}</Text>
           </Link>)}
-          
-          <Link to="/doc/1">
-            <Text>Documento 1</Text>
-          </Link>
-
-          <Link to="/doc/2">
-            <Text>Documento 2</Text>
-          </Link>
-
-          <Link to="/doc/2">
-            <Text>Documento 2</Text>
-          </Link>
       </View>
     );
   }
