@@ -3,32 +3,19 @@ import { Text, Image, View, Button } from 'react-native';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
+import store from '../../stores/store';
 
 @observer export default class DocView extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {
-            blocks: [
-                {
-                    id: 0,
-                    type: 'text',
-                    text: 'Lorem ipsum lo que sea'
-                },
-                {
-                    id: 1,
-                    type: 'img',
-                    url: 'https://static2.lasprovincias.es/www/multimedia/201706/25/media/cortadas/gato-kngE-U4015529328506D-624x385@Las%20Provincias.jpg'
-                }
-            ],
-        };
         this.addText = this.addText.bind(this);
         this.addImage = this.addImage.bind(this);
     }
 
     addText(){
-        this.test = 'otra cosa';
-        this.setState((prevState) => {
+        store.docs.addText('hola ' + Math.random());
+        /*this.setState((prevState) => {
             return {
                 blocks: [ ...prevState.blocks, {
                     id: prevState.blocks.length,
@@ -36,11 +23,11 @@ import { observer } from 'mobx-react/native';
                     text: 'hola ' + Math.random()
                 } ]
             }
-        });
+        });*/
     }
 
     addImage(){
-        this.setState((prevState) => {
+        /*this.setState((prevState) => {
             return {
                 blocks: [ ...prevState.blocks, {
                     id: prevState.blocks.length,
@@ -48,16 +35,23 @@ import { observer } from 'mobx-react/native';
                     url: 'https://fotografias.lasexta.com/clipping/cmsimages01/2017/02/07/364CAAAC-A60E-43BB-8FED-05AA0B8F3AF9/58.jpg'
                 } ]
             }
-        });
+        });*/
     }
 
     render(){
         let { id } = this.props.match.params;
+        if(store.docs.selected === null || 
+            id != store.docs.selected.id){
+            store.docs.setSelectedById(id);
+        }
+        let doc = store.docs.selected;
+
+
         return (
             <View>
-                <Text>Doc View {id} - {this.test}</Text>
+                <Text>Doc View {id}</Text>
     
-                {this.state.blocks && this.state.blocks.map((block) => {
+                {doc.blocks && doc.blocks.map((block) => {
                     if(block.type === 'text'){
                         return <Text key={block.id}>{block.text}</Text>
                     } else {
