@@ -1,7 +1,12 @@
 import React from 'react';
 import { Text, Image, View, Button } from 'react-native';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react/native';
 
-export default class DocView extends React.Component{
+
+@observer export default class DocView extends React.Component{
+
+    @observable test = 'hola';
 
     constructor(props){
         super(props);
@@ -24,6 +29,7 @@ export default class DocView extends React.Component{
     }
 
     addText(){
+        this.test = 'otra cosa';
         this.setState((prevState) => {
             return {
                 blocks: [ ...prevState.blocks, {
@@ -51,7 +57,7 @@ export default class DocView extends React.Component{
         let { id } = this.props.match.params;
         return (
             <View>
-                <Text>Doc View {id}</Text>
+                <Text>Doc View {id} - {this.test}</Text>
     
                 {this.state.blocks && this.state.blocks.map((block) => {
                     if(block.type === 'text'){

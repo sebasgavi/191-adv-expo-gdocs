@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "App.js",
+        "App.test.js",
+        "build",
+        "node_modules"
+    ],
+    "compileOnSave": false
+}
