@@ -15,24 +15,19 @@ import store from '../../stores/store';
 
     addText(){
         store.docs.addText('hola ' + Math.random());
-        /*this.setState((prevState) => {
-            return {
-                blocks: [ ...prevState.blocks, {
-                    id: prevState.blocks.length,
-                    type: 'text',
-                    text: 'hola ' + Math.random()
-                } ]
-            }
-        });*/
     }
 
     addImage(){
+        store.docs.addImage(
+            'https://fotografias.lasexta.com/clipping/cmsimages01/2017/02/07/364CAAAC-A60E-43BB-8FED-05AA0B8F3AF9/58.jpg',
+            Math.round(Math.random() * 100 + 50)
+        );
         /*this.setState((prevState) => {
             return {
                 blocks: [ ...prevState.blocks, {
                     id: prevState.blocks.length,
                     type: 'img',
-                    url: 'https://fotografias.lasexta.com/clipping/cmsimages01/2017/02/07/364CAAAC-A60E-43BB-8FED-05AA0B8F3AF9/58.jpg'
+                    url: 
                 } ]
             }
         });*/
