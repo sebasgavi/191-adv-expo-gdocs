@@ -1,22 +1,12 @@
 import { observable, action, computed } from 'mobx';
-//import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 export class Documents {
 
     constructor(){
-        /*getData = async () => {
-            try {
-              const value = await AsyncStorage.getItem('list')
-              if(value !== null) {
-                let storageList = JSON.parse(value);
-                if(storageList !== null) this.list = storageList;
-              }
-            } catch(e) {
-              // error reading value
-            }
-        }*/
+        this.readStorage();
 
         var firebaseConfig = {
             apiKey: "AIzaSyApqUPW4WvE5dCC0G7z8lpqhTndxK66aoM",
@@ -36,7 +26,6 @@ export class Documents {
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
                     console.log(doc.id, " => ", doc.data());
                     let temp = {
                         ...doc.data(),
@@ -92,14 +81,24 @@ export class Documents {
         this.updateStorage();
     }
 
-    updateStorage(){
-        /*storeData = async () => {
-            try {
-                await AsyncStorage.setItem('list', JSON.stringify(this.list));
-            } catch (e) {
-                // saving error
+    async updateStorage(){
+        try {
+            await AsyncStorage.setItem('list', JSON.stringify(this.list));
+        } catch (e) {
+            // saving error
+        }
+    }
+
+    async readStorage(){
+        try {
+            const value = await AsyncStorage.getItem('list')
+            if(value !== null) {
+            let storageList = JSON.parse(value);
+            if(storageList !== null) this.list = storageList;
             }
-        }*/
+        } catch(e) {
+            // error reading value
+        }
     }
 
     @action setSelectedById(id){
