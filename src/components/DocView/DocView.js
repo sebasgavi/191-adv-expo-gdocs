@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, View, Button } from 'react-native';
+import { Text, Image, View, Button, BackHandler } from 'react-native';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
@@ -11,6 +11,7 @@ import store from '../../stores/store';
         super(props);
         this.addText = this.addText.bind(this);
         this.addImage = this.addImage.bind(this);
+        this.handleBackPress = this.handleBackPress.bind(this);
     }
 
     addText(){
@@ -56,4 +57,18 @@ import store from '../../stores/store';
             </View>
         );
     }
+
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount(){
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress(){
+        this.props.history.push('/');
+        return true;
+    }
+    
 }
