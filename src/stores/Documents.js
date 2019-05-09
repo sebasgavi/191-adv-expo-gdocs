@@ -1,37 +1,36 @@
 import { observable, action, computed } from 'mobx';
 import { AsyncStorage } from 'react-native';
-import * as firebase from "firebase/app";
-import "firebase/firestore";
 
 export class Documents {
 
-    constructor(){
+    constructor(db){
+        this.db = db;
+
         this.readStorage();
-
-        var firebaseConfig = {
-            apiKey: "AIzaSyApqUPW4WvE5dCC0G7z8lpqhTndxK66aoM",
-            authDomain: "adv-90ad2.firebaseapp.com",
-            databaseURL: "https://adv-90ad2.firebaseio.com",
-            projectId: "adv-90ad2",
-            storageBucket: "adv-90ad2.appspot.com",
-            messagingSenderId: "652073464161",
-            appId: "1:652073464161:web:e25895ffe91aa783"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        this.db = firebase.firestore();
 
         this.db.collection("documents")
             .where('owner', '==', '3uSLdOhkgJeccSVZlt4L')
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.id, " => ", doc.data());
+                    
+                    let found = this.list.findIndex((docGuardado) => {
+                        return doc.id === docGuardado.id;
+                    });
+
                     let temp = {
                         ...doc.data(),
                         id: doc.id
                     };
-                    this.list.push(temp);
+                    //if(!temp.blocks) temp.blocks = [];
+
+                    if(found < 0){
+                        this.list.push(temp);
+                    } else {
+                        this.list.splice(found, 1);
+                        temp.blocks.concat(this.list[found].blocks);
+                        this.list.push(temp);
+                    }
                 });
             })
             .catch(function(error) {
@@ -82,8 +81,16 @@ export class Documents {
     }
 
     async updateStorage(){
+
+        let copy = { ...this.selected };
+        delete copy.id;
+
+        this.db.collection('documents')
+            .doc(this.selected.id + '')
+            .set(copy);
+
         try {
-            await AsyncStorage.setItem('list', JSON.stringify(this.list));
+            await AsyncStorage.setItem('list', JSON.stringify(this.list));            
         } catch (e) {
             // saving error
         }
@@ -91,10 +98,10 @@ export class Documents {
 
     async readStorage(){
         try {
-            const value = await AsyncStorage.getItem('list')
+            const value = await AsyncStorage.getItem('list');
             if(value !== null) {
-            let storageList = JSON.parse(value);
-            if(storageList !== null) this.list = storageList;
+                let storageList = JSON.parse(value);
+                if(storageList !== null) this.list = storageList;
             }
         } catch(e) {
             // error reading value
@@ -102,8 +109,9 @@ export class Documents {
     }
 
     @action setSelectedById(id){
-        let doc = this.list.find(doc => doc.id === parseInt(id));
+        let doc = this.list.find(doc => doc.id == id);
         this.selected = doc;
+        this.selected.blocks = this.selected.blocks || [];
     }
 
 }

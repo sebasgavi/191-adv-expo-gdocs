@@ -26,12 +26,14 @@ import store from '../../stores/store';
 
     render(){
         let { id } = this.props.match.params;
+        
         if(store.docs.selected === null || 
             id != store.docs.selected.id){
             store.docs.setSelectedById(id);
         }
         let doc = store.docs.selected;
 
+        if(!doc) return null;
 
         return (
             <View>
